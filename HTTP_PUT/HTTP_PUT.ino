@@ -13,7 +13,7 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
   Serial.println("\n\nWelcome to JP Learning\n");
-  setup_wifi();
+  setup_wifi(); 
 }
 void loop() {
   //Check WiFi connection status
