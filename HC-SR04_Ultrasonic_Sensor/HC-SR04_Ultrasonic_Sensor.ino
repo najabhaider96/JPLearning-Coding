@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 #define TRIGGER_PIN 12
 #define ECHO_PIN 14
 

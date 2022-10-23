@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 byte LED_PIN = 5;
 bool running = false;
 byte a = 255;

@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 byte LED_PIN1 = 5, LED_PIN2 = 4;
 byte SENSOR_PIN1 = 2, SENSOR_PIN2 = 3;
 

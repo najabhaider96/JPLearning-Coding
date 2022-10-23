@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 long countUp = 0;            //creates a variable integer called 'countUp'
 
 void setup() {

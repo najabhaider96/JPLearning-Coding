@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 byte LED_PIN = 5, SENSOR_PIN = 2;
 void setup () {
   Serial.begin(115200);

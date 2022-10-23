@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 int myInts[6];
 int myPins[] = {2, 4, 8, 3, 6};
 int mySensVals[5] = {2, 4, -8, 3, 2};

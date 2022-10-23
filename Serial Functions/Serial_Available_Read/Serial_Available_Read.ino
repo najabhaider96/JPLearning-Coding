@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 int incomingByte = 0;
 void setup() {
   Serial.begin(9600); 

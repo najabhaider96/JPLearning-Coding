@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 void setup () {
   Serial.begin(115200);
   for (int i = 0; i < 7; i++) {

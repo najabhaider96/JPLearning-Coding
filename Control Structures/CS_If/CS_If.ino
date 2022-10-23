@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 int x = 0;
 byte LED_PIN = 5;
 void setup () {

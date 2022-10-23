@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 void setup() {
   Serial.begin(9600);
   Serial.write(45);     // write a byte with the value 45 => '-' character     

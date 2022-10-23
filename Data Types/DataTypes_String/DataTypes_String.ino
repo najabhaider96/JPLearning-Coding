@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 char Str1[15];
 char Str2[8] = {'a', 'r', 'd', 'u', 'i', 'n', 'o'};
 char Str3[8] = {'a', 'r', 'd', 'u', 'i', 'n', 'o', '\0'};
