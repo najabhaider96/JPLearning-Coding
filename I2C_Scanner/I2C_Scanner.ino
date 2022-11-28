@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 #include <Wire.h>
 void setup()
 {

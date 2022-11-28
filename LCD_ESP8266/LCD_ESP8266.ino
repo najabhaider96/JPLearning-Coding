@@ -1,3 +1,6 @@
+/*
+Welcome to JP Learning
+*/
 #include <LiquidCrystal_I2C.h>
 
 //int lcdAddr = 0x3F; // 63 in decimal
@@ -16,7 +19,6 @@ void setup() {
   // Move the cursor characters to the right and
   // zero characters down (line 1).
   lcd.setCursor(0, 0);
-  // Print HELLO to the screen, starting at 5,0.
   lcd.print("LCD With ESP8266");
 
   // Move the cursor to the next line and print
