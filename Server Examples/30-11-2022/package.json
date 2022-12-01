@@ -1,0 +1,14 @@
+{
+  "name": "30-11-2022",
+  "version": "1.0.0",
+  "description": "This is NPM practice project.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Najaf Haider",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.29.4"
+  }
+}
