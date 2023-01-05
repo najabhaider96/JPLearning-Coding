@@ -27,8 +27,8 @@ const io = require('socket.io')(server, {
 const Users = require('./models/usersModel');
 const Events = require('./models/eventsModel');
 
-const topic_mqtt_receive = 'JPLearning_SensorData';
-const topic_mqtt_send = 'JPLearning_CommandRequest';
+const topic_mqtt_receive = 'SensorData';
+const topic_mqtt_send = 'CommandRequest';
 const topic_ws_receive = 'JPLearning_CommandRequest';
 const topic_ws_send = 'JPLearning_SensorData';
 
@@ -212,7 +212,16 @@ sendToApplicaiton = async (topic, msg) => {
 
 // MQTT(HiveMQ)
 
-const client = mqtt.connect('mqtt://broker.hivemq.com:1883');
+const options = {
+    host: 'Your Cluster Address',
+    port: 8883,
+    protocol: 'mqtts',
+    username: 'Your Created User',
+    password: 'Your Created Password'
+}
+
+const client = mqtt.connect(options);
+// const client = mqtt.connect('broker.hivemq.com:1883');
 client.on('connect', async () => {
     console.log('MQTT Connected');
 
