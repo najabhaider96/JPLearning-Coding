@@ -105,7 +105,8 @@
         getData();
 
         // Socket.IO
-        let socket = io('ws://localhost:8080');
+        let socket = io('ws://jiyepakistanlearning.herokuapp.com');
+        // let socket = io('ws://localhost:8080');
         let el;
 
         socket.on('time', (timeString) => {
