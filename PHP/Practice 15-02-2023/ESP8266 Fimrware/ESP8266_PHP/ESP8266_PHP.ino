@@ -23,7 +23,6 @@ HTTPClient http;
 
 // Replace with PC IP with PORT
 String Host = "http://192.168.0.150:8000";
-// String dataSendUrl = Host + "/demo/";
 String dataSendUrl = Host + "/practice/index.php";
 
 // Data Sending Time
