@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JP Learning - Application</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+    <script>
+        let lightStatus = false;
+        setEvents = async (type, value, created) => {
+            if (type === 'Connection') {
+                const wifiIcon = document.getElementById('wifi-icon');
+                if (value) {
+                    wifiIcon.classList.remove('bi-wifi-off');
+                    wifiIcon.classList.add('bi-wifi');
+                } else {
+                    wifiIcon.classList.remove('bi-wifi');
+                    wifiIcon.classList.add('bi-wifi-off');
+                }
+            } else if (type === 'Temperature') {
+                let el = document.getElementById('temp');
+                el.innerHTML = value + ' °C';
+                el = document.getElementById('temp-time');
+                el.innerHTML = 'Updated Time: ' + created;
+            } else if (type === 'Humidity') {
+                let el = document.getElementById('humd');
+                el.innerHTML = value + ' %';
+                el = document.getElementById('humd-time');
+                el.innerHTML = 'Updated Time: ' + created;
+            } else if (type === 'Light') {
+                const status = document.getElementById('status')
+                let el = document.getElementById('status-time');
+                el.innerHTML = 'Updated Time: ' + created;
+
+                const bulbIcon = document.getElementById('bulb-icon');
+                if (value == '0') {
+                    // document.getElementById('bulb').src = './bulb-off.png';
+                    bulbIcon.classList.remove('bi-lightbulb-fill');
+                    bulbIcon.classList.add('bi-lightbulb-off');
+
+                    console.log('Light OFF');
+                    status.innerText = "OFF";
+
+                    lightStatus = false;
+                } else if (value == '1') {
+                    // document.getElementById('bulb').src = './bulb-on.png';
+                    bulbIcon.classList.remove('bi-lightbulb-off');
+                    bulbIcon.classList.add('bi-lightbulb-fill');
+
+                    console.log('Light ON');
+                    status.innerText = "ON";
+
+                    lightStatus = true;
+                }
+            }
+        }
+
+        handleData = async (events) => {
+            events.forEach(event => {
+                console.log('event:', event);
+
+                let type = event.type;
+                let value = event.value;
+                let created = event.created;
+
+                console.log('type:', type)
+                console.log('value:', value)
+                console.log('created:', created)
+
+                setEvents(type, value, created);
+            });
+        }
+
+        getData = async () => {
+            console.log('HTTP GET with Axios');
+            axios.get("http://localhost:8080/events/Device0001")
+                .then(response => {
+                    console.log('response:', response);
+                    // access parsed JSON response data using response.data field
+                    let events = response.data;
+                    console.log('events:', events);
+
+                    handleData(events);
+                })
+                .catch(error => {
+                    if (error.response) {
+                        //get HTTP error code
+                        console.log(error.reponse.status)
+                    } else {
+                        console.log(error.message)
+                    }
+                })
+        }
+
+        // Get last events of all sensors
+        getData();
+
+        // Socket.IO
+        let socket = io('ws://localhost:8080');
+        let el;
+
+        socket.on('time', (timeString) => {
+            let el = document.getElementById('server-time');
+            el.innerHTML = 'Server time: ' + timeString;
+        });
+
+        socket.on('JPLearning_SensorData', (event) => {
+            console.log('Sensor event: ', event);
+
+            let type = event.type
+            let value = event.value
+            let created = event.created
+
+            console.log('type:', type)
+            console.log('value:', value)
+            console.log('created:', created)
+
+            setEvents(type, value, created);
+        });
+
+        changeStatus = async () => {
+            console.log('changeStatus() called');
+            if (!lightStatus) {
+                console.log('Light ON');
+                socket.emit('JPLearning_CommandRequest', JSON.parse('{"device_id":"Device0001", "type":"Light", "value":1}'));
+            } else {
+                console.log('Light OFF');
+                socket.emit('JPLearning_CommandRequest', JSON.parse('{"device_id":"Device0001", "type":"Light", "value":0}'));
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #00afd3;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .sensor-box {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            min-width: 200px;
+            max-width: 250px;
+            text-align: center;
+        }
+
+        .sensor-icon1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #8d01ff;
+        }
+
+        .sensor-icon2 {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #34ff01;
+        }
+
+        .sensor-icon3 {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+
+        .sensor-icon4 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .sensor-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .sensor-label {
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .light-switch {
+            cursor: pointer;
+        }
+
+        .light-switch .sensor-icon {
+            color: #ffd700;
+            /* Golden Yellow */
+        }
+
+        .light-switch .sensor-icon2 {
+            color: white;
+            /* Golden Yellow */
+        }
+
+        footer {
+            background-color: #00afd3;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>JP Learning</h1>
+        <h2>Smart Home</h2>
+        <div class="sensor-icon4">
+            <i id="wifi-icon" class="bi-wifi-off"></i>
+        </div>
+        <h3>Device0001</h3>
+    </header>
+
+    <div class="container">
+        <div class="sensor-box">
+            <div class="sensor-icon1">
+                <i class="bi bi-thermometer-half"></i>
+            </div>
+            <div class="sensor-value" id="temp">-- °C</div>
+            <div class="sensor-label" id="temp-time">Updated Time: --</div>
+        </div>
+
+        <div class="sensor-box">
+            <div class="sensor-icon2">
+                <i class="bi bi-moisture"></i>
+            </div>
+            <div class="sensor-value" id="humd">-- %</div>
+            <div class="sensor-label" id="humd-time">Updated Time: --</div>
+        </div>
+
+        <div class="sensor-box light-switch">
+            <div class="sensor-icon3" onclick="changeStatus()">
+                <i id="bulb-icon" class="bi bi-lightbulb-off"></i>
+            </div>
+            <div class="sensor-value" id="status">OFF</div>
+            <div class="sensor-label" id="status-time">Updated Time: --</div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2023 JP Learning - Fronted Application
+    </footer>
+</body>
+
+</html>
