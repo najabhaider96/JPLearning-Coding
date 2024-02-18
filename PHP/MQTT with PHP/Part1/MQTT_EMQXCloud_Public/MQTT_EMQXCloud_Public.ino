@@ -14,8 +14,8 @@ Welcome to JP Learning
 DHT dht(DHT_PIN, DHT_TYPE);
 
 // Wi-Fi Credentials
-const char* ssid = "Internet";
-const char* password = "najaf1992";
+const char* ssid = "Your Wi-Fi SSID";
+const char* password = "Your Wi-Fi PASSWORD";
 
 // MQTT Broker Details
 String device_id = "Device0001";
