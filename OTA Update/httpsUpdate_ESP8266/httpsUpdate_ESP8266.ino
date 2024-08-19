@@ -5,13 +5,14 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266httpUpdate.h>
+#include <CertStoreBearSSL.h>
 
 // Wi-Fi Credentials
 const char* ssid = "Your SSID";
 const char* password = "Your Password";
 
 String codeVersion = "1.0.0";
-String updateURL = "http://Your file address .bin";
+String updateURL = "https://Your file address .bin";
 
 // Update Time
 unsigned long CurrentMillis, PreviousMillis, UpdateTime = (unsigned long) 1000 * 10;
@@ -36,7 +37,8 @@ void loop() {
 
     // wait for WiFi connection
     if (WiFi.status() == WL_CONNECTED) {
-      WiFiClient client;
+      BearSSL::WiFiClientSecure client;
+      client.setInsecure();
 
       // The line below is optional. It can be used to blink the LED on the board during flashing
       // The LED will be on during download of one buffer of data from the network. The LED will
@@ -54,10 +56,10 @@ void loop() {
 
       Serial.println("OTA url is : " + updateURL + "\nOTA Begin...");
 
-      t_httpUpdate_return ret = ESPhttpUpdate.update(client, updateURL);
+      //      t_httpUpdate_return ret = ESPhttpUpdate.update(client, updateURL);
       // Or:
-      // t_httpUpdate_return ret = ESPhttpUpdate.update(client, "server", 80, "file.bin");
-
+      t_httpUpdate_return ret = ESPhttpUpdate.update(client, "Your server address", 443, "Your file path .bin");
+      
       switch (ret) {
         case HTTP_UPDATE_FAILED: Serial.printf("HTTP_UPDATE_FAILD Error (%d): %s\n", ESPhttpUpdate.getLastError(), ESPhttpUpdate.getLastErrorString().c_str()); break;
 
